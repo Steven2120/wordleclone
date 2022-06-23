@@ -6,12 +6,13 @@ const useWordle = (solution) => {
   const [turn, setTurn] = useState(0);
 
   const [currentGuess, setCurrentGuess] = useState("");
-
   const [guesses, setGuesses] = useState([...Array(6)]);
+
   const [history, setHistory] = useState([]);
   const [isCorrect, setIsCorrect] = useState(false);
 
   const [usedKeys, setUsedKeys] = useState({});
+
   const formatGuess = () => {
     let solutionArray = [...solution];
 
@@ -22,7 +23,6 @@ const useWordle = (solution) => {
     formattedGuess.forEach((letter, index) => {
       if (solutionArray[index] === letter.key) {
         formattedGuess[index].color = "green";
-
         solutionArray[index] = null;
       }
     });
@@ -36,12 +36,14 @@ const useWordle = (solution) => {
 
     return formattedGuess;
   };
+
   const addNewGuess = (formattedGuess) => {
     if (currentGuess === solution) {
       setIsCorrect(true);
     }
     setGuesses((prevGuesses) => {
       let newGuesses = [...prevGuesses];
+
       newGuesses[turn] = formattedGuess;
       return newGuesses;
     });
@@ -83,23 +85,24 @@ const useWordle = (solution) => {
   };
 
   const handleKeyup = ({ key }) => {
-    console.log(key);
+    // console.log(key);
 
     if (key === "Enter") {
       const isValidGuess = validateGuess();
+
       if (!isValidGuess) {
         return;
       }
       const formatted = formatGuess();
       addNewGuess(formatted);
     }
-
     if (key === "Backspace" || key === "Delete") {
       setCurrentGuess((prev) => {
         return prev.slice(0, -1);
       });
       return;
     }
+
     if (/^[A-Za-z]$/.test(key)) {
       if (currentGuess.length < 5) {
         setCurrentGuess((prev) => {
